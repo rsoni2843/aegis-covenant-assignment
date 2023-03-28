@@ -2,13 +2,11 @@ const express = require("express");
 
 const tesseract = require("node-tesseract-ocr");
 
-const path = require("path");
-
 const app = express();
 
 app.use(express.json());
 
-app.post("/imageSolve", (req, res) => {
+app.post("/solve", (req, res) => {
   const { url } = req.body;
   console.log(url);
   const config = {
@@ -20,7 +18,7 @@ app.post("/imageSolve", (req, res) => {
   tesseract
     .recognize(url, config)
     .then((text) => {
-      res.send({ response: text.replace("\n\f", "") });
+      res.status(201).json({ response: text.replace("\n\f", "") });
     })
     .catch((error) => {
       console.log(error.message);
